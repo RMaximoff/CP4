@@ -11,23 +11,30 @@ class HHapi(CommonAPI):
 
     def __init__(self, vacancy: str):
         self.headers = {'User-Agent': 'MyApp my-app-feedback@123123.com'}
+        self.vacancy = vacancy
         self.url_specializations = 'https://api.hh.ru/vacancies'
-        self.params = {'text': vacancy}
         self.vacancy_list = self.connect()
-        self.out_data_list = []
+        self.out_data_list = self.info_vacancy()
 
     def connect(self):
         """
-        Метод подключения
+        Подключаемся к api hh.ru
         :return:
         """
-        r = requests.get(url=self.url_specializations, headers=self.headers, params=self.params).json()['items']
-        return [i for i in r]
+        params = {'text': self.vacancy,
+                       }
+        r = requests.get(url=self.url_specializations, headers=self.headers, params=self.params)
+        if r.status_code == 200:
+            return [i for i in r.json()['items']]
+        else:
+            print(f'При подключении к HH.ru произошла ошибка. Код ошибки {r.status_code}')
+            exit()
 
     def info_vacancy(self):
         """
         Метод приводит вакансии из json в необходимый вид и сохраняет в список out_data_list
         """
+        vacancy_list = []
         for vacancy in self.vacancy_list:
             vacancy_info = {'name': vacancy['name'],
                             'link': vacancy['alternate_url'],
@@ -55,6 +62,10 @@ class HHapi(CommonAPI):
                 vacancy_info['responsibility'] = vacancy['responsibility']
             else:
                 vacancy_info['responsibility'] = 'Нет описания обязанностей'
+            vacancy_list.append(vacancy_info)
 
-            self.out_data_list.append(vacancy_info)
+        return vacancy_list
 
+
+a = HHapi('python')
+print(a.out_data_list)
