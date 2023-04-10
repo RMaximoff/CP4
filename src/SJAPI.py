@@ -1,3 +1,4 @@
+import requests
 from src.connector import CommonAPI
 import os
 
@@ -48,10 +49,16 @@ class SJCred:
             file.write(key)
 
 
-class SJAPI(CommonAPI):
+class SJapi(CommonAPI):
     """
     Класс взаимодействия с API superjob.ru
     """
 
     def __init__(self, api_key):
         self.headers = {'X-Api-App-Id': api_key}
+        self.url = ''
+
+    def connect(self):
+        pass
+
+
