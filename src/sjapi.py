@@ -1,3 +1,5 @@
+import json
+
 import requests
 from src.connector import CommonAPI
 import os
@@ -54,11 +56,43 @@ class SJapi(CommonAPI):
     Класс взаимодействия с API superjob.ru
     """
 
-    def __init__(self, api_key):
+    def __init__(self, api_key: str, vacancy: str):
         self.headers = {'X-Api-App-Id': api_key}
-        self.url = ''
+        self.url = 'https://api.superjob.ru/2.0/vacancies/'
+        self.params = {'keyword': vacancy,
+                       'order_field': 'payment',
+                       'order_direction': 'desc'}
+        self.vacancy_list = self.connect()
 
     def connect(self):
-        pass
+        """
+        Метод подключения к api superjob
+        :return: список вакансий
+        """
+        r = requests.get(url=self.url, headers=self.headers, params=self.params)
+        return r.json()['objects']
+
+    def info_vacancy(self):
+        """
+        Метод приводит вакансии из json в необходимый вид и сохраняет в список out_data_list
+        """
+        vacancy_list = []
+        for vacancy in self.vacancy_list:
+            vacancy_info = {'name': vacancy['profession'],
+                            'link': vacancy['link'],
+                            'requirement': vacancy['candidat'],
+                            'employer': vacancy['client']['title'],
+                            'responsibility': vacancy['vacancyRichText'],
+                            'salary_from': vacancy['payment_from'],
+                            'salary_to': vacancy['payment_to'],
+                            'currency': vacancy['currency']}
+            vacancy_list.append(vacancy_info)
+
+        return vacancy_list
 
 
+a = SJapi('v3.r.137482563.90565da25eeae8b8d0612a08e8e717b50f7168b7.68ddd4f56092a57b2e2a0e3f196080624f80f5b1', 'python')
+c = a.connect()
+print(json.dumps(c, indent=2, ensure_ascii=False))
+b = a.info_vacancy()
+print(b)

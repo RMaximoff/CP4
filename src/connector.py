@@ -1,5 +1,4 @@
 from abc import ABC, abstractmethod
-import requests
 
 
 class CommonAPI(ABC):
@@ -8,6 +7,19 @@ class CommonAPI(ABC):
     """
 
     @abstractmethod
-    def connect(self, url: str, headers: dict):
-        return requests.get(url=url, headers=headers)
+    def _connect(self):
+        pass
+
+    @abstractmethod
+    def _calculate_num_pages(self):
+        pass
+
+    @abstractmethod
+    def _get_vacancies(self):
+        pass
+
+    @abstractmethod
+    def _info_vacancy(self, vacancy_info):
+        pass
+
 
