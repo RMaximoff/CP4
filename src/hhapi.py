@@ -86,19 +86,19 @@ class HHapi(CommonAPI):
                             'link': vac['alternate_url'],
                             'employer': vac['employer']['name']}
 
-            if vac['snippet']['requirement'] is not None:
+            if vac['snippet'].get('requirement'):
                 vacancy_info['requirement'] = vac['snippet']['requirement'].replace('<highlighttext>', '')\
                                                                             .replace('</highlighttext>', '')
             else:
                 vacancy_info['requirement'] = 'Нет описания требований к кандидату'
 
-            if vac['salary'] is not None:
-                if vac['salary']['from'] is None:
+            if vac.get('salary'):
+                if vac['salary'].get('from'):
                     vacancy_info['salary_from'] = 0
                 else:
                     vacancy_info['salary_from'] = vac['salary']['from']
 
-                if vac['salary']['to'] is None:
+                if vac['salary'].get('to'):
                     vacancy_info['salary_to'] = 0
                 else:
                     vacancy_info['salary_to'] = vac['salary']['to']
@@ -113,7 +113,6 @@ class HHapi(CommonAPI):
             else:
                 vacancy_info['responsibility'] = 'Нет описания обязанностей'
             self.__out_vacancy_list.append(vacancy_info)
-
 
 a = HHapi('водитель категории C', '600')
 print(json.dumps(a.vacancy_list, indent=2, ensure_ascii=False))
