@@ -10,7 +10,7 @@ class HHapi(CommonAPI):
     Класс взаимодействия с API hh.ru
     На выходе получаем инфу по вакансиям в json формате
     """
-    __URL_SPECIALIZATIONS = 'https://pi.hh.ru/vacancies'
+    __URL_SPECIALIZATIONS = 'https://api.hh.ru/vacancies'
     __HEADERS = {'User-Agent': 'MyApp my-app-feedback@123123.com'}
     __PER_PAGE = 100
 
@@ -82,7 +82,8 @@ class HHapi(CommonAPI):
         """
 
         for vac in vacancies:
-            vacancy_info = {'name': vac['name'],
+            vacancy_info = {'from': 'HeadHunter',
+                            'name': vac['name'],
                             'link': vac['alternate_url'],
                             'employer': vac['employer']['name']}
 
@@ -113,8 +114,4 @@ class HHapi(CommonAPI):
             else:
                 vacancy_info['responsibility'] = 'Нет описания обязанностей'
             self.__out_vacancy_list.append(vacancy_info)
-
-a = HHapi('водитель категории C', '600')
-print(json.dumps(a.vacancy_list, indent=2, ensure_ascii=False))
-print(len(a.vacancy_list))
 
