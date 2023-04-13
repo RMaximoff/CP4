@@ -1,5 +1,5 @@
-from src.hhapi import HHapi
-from src.sjapi import SJapi, SJCred
+from src.hhapi import HeadHunterAPI
+from src.sjapi import SuperJobAPI, SJCred
 from utils.utils import hh_interaction
 
 
@@ -25,6 +25,7 @@ def main():
             print("Укажите номер одного из вариантов")
 
 
+a = SuperJobAPI
 
 
 
