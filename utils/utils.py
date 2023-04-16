@@ -1,5 +1,5 @@
-from src.hhapi import HHapi
-from src.sjapi import SJCred, SJapi
+from src.hhapi import HeadHunterAPI
+from src.sjapi import SJCred, SuperJobAPI
 
 
 def hh_interaction(text: str, num_of_vac: str):
@@ -9,7 +9,7 @@ def hh_interaction(text: str, num_of_vac: str):
     :param num_of_vac: количество результатов
     :return:
     """
-    hh = HHapi(text, num_of_vac)
+    hh = HeadHunterAPI(text, num_of_vac)
 
     if num_of_vac == '':
         pass

@@ -7,7 +7,7 @@ class SJCred:
     """
     Класс установки/проверки api ключа для superjob.ru
     """
-    def __init__(self, key):
+    def __init__(self):
         self.__key_path = os.path.abspath('sj_cred.txt')
         if not self.__check_key():
             self.__write_key(self.__get_key())
@@ -58,7 +58,7 @@ class SuperJobAPI(CommonAPI):
     __KEY_FOUND_VACANCY = 'total'  # Ключ к кол-ву результатов по запрашиваемой вакансии
     __KEY_VACANCIES_LIST = 'objects'  # Ключ к вакансиям
     __KEY_PARAMS_PAGE = 'page'  # Ключ к параметру номера страницы передаваемой в запросе
-    __TIME_SLEEP = 0.55  # ограничение в 120 запросов в минуту
+    __TIME_SLEEP = 0.52  # ограничение в 120 запросов в минуту
 
     def __init__(self, api_key: str, vacancy: str, number_of_vacancy: str):
         self.__headers = {'X-Api-App-Id': api_key}
@@ -89,21 +89,20 @@ class SuperJobAPI(CommonAPI):
         """
         Метод приводит вакансии из json в необходимый вид и сохраняет в список out_data_list
         """
-
         for vac in vacancies:
             vacancy_info = {'from': 'SuperJob',
                             'name': vac.get('profession', "Вакансия без названия"),
                             'link': vac.get('link', 'Нет ссылки'),
                             'requirement': vac.get('candidat', 'Нет описания требований к кандидату'),
-                            'salary_from': vac.get('payment_from', 0),
-                            'salary_to': vac.get('salary_to', 0),
+                            'salary_from': vac.get('payment_from') or 0,
+                            'salary_to': vac.get('salary_to') or 0,
                             'currency': vac.get('currency', 'Валюта не указана')}
-
             if vac.get('client'):
                 if vac['client'].get('title'):
                     vacancy_info['employer'] = vac['client']['title']
+                else:
+                    vacancy_info['employer'] = 'Название организации не указано'
             else:
                 vacancy_info['employer'] = 'Название организации не указано'
 
             self._out_vacancy_list.append(vacancy_info)
-

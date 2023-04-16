@@ -38,7 +38,7 @@ class HeadHunterAPI(CommonAPI):
         Геттер кол-ва вакансий
         :return: int кол-во вакансий
         """
-        return self._vacancy_dict[self.__KEY_FOUND_VACANCY]
+        return self._out_vacancy_list
 
     @property
     def vacancy_list(self):
@@ -58,8 +58,8 @@ class HeadHunterAPI(CommonAPI):
                             'name': vac.get('name', 'Нет названия'),
                             'link': vac.get('alternate_url', 'Нет ссылки'),
                             'employer': vac['employer'].get('name', 'Название организации не указано'),
-                            'salary_from': vac['salary'].get('from', 0),
-                            'salary_to': vac['salary'].get('to', 0),
+                            'salary_from': vac['salary'].get('from') or 0,
+                            'salary_to': vac['salary'].get('to') or 0,
                             'currency': vac['salary'].get('currency', 'Валюта не указана')}
 
             if vac.get('snippet').get('requirement'):
@@ -69,8 +69,3 @@ class HeadHunterAPI(CommonAPI):
                 vacancy_info['requirement'] = 'Нет описания требований к кандидату'
 
             self._out_vacancy_list.append(vacancy_info)
-
-
-a = HeadHunterAPI('postgres', '10')
-print(json.dumps(a.vacancy_list,indent=2, ensure_ascii=False))
-print(len(a.vacancy_list))
