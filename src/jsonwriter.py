@@ -1,27 +1,29 @@
 import os
 import json
+from src.saver import Saver
 
 
-class JSONWriter:
+class JSONWriter(Saver):
     """
     Запись и чтение json
     """
-    def __init__(self):
-        self.name_file = 'vacancies.json'
+    _file_name = 'vacancies.json'
 
-    def write_json(self, vacancies: dict):
+    @classmethod
+    def writer(cls, vacancies: dict):
         """
         Запись в файл
         :return:
         """
-        with open(self.name_file, 'w') as file:
+        with open(cls._file_name, 'w', encoding='utf-8') as file:
             json.dump(vacancies, file, indent=4, ensure_ascii=False)
 
-    def read_json(self):
+    @classmethod
+    def reader(cls):
         """
         Чтение файла
         :return:
         """
-        with open(self.name_file, 'w') as file:
+        with open(cls._file_name, 'w') as file:
             json.load(file, indent=4, ensure_ascii=False)
 

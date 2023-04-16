@@ -1,6 +1,7 @@
 from src.hhapi import HeadHunterAPI
 from src.sjapi import SuperJobAPI, SJCred
 from src.vacancy import Vacancy
+from src.jsonwriter import JSONWriter
 
 
 def main():
@@ -28,7 +29,7 @@ def main():
             break
         else:
             print("Укажите номер одного из вариантов")
-
+    JSONWriter.write_json(vacancies)
     for i in vacancies:
         print(str(Vacancy(i)))
 
