@@ -20,14 +20,16 @@ class CommonAPI(ABC):
         """
         Метод создает запрос к api сайта
         """
-
-        r = requests.get(url=self._url, headers=self._headers, params=self._params)
-        if r.status_code == 200:
+        try:
+            r = requests.get(url=self._url, headers=self._headers, params=self._params)
             self._vacancy_dict.update(r.json())
-        else:
-            print(f'Произошла ошибка при подключении к источникам данных.\n'
-                  f'Код ошибки{r.status_code}')
-            exit()
+        except ConnectionError:
+            print('Connection error!')
+        except requests.HTTPError:
+            print('HTTP error')
+        except TimeoutError:
+            print('Timeout error')
+        return {}
 
     def _get_vacancies(self, key_vacancies_list: str, key_page: str, time_sleep: float):
         """
@@ -36,7 +38,7 @@ class CommonAPI(ABC):
         :param key_page: Ключ к параметру номера страницы передаваемой в запросе
         :param time_sleep: время между циклами
         """
-        for i in range(1, self._pages + 1):
+        for i in range(0, self._pages):
             self._params[key_page] = i
             self._connect()
             self._info_vacancy(self._vacancy_dict[key_vacancies_list])

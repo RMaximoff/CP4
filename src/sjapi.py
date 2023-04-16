@@ -1,6 +1,4 @@
 import json
-
-import requests
 from src.connector import CommonAPI
 import os
 
@@ -64,7 +62,7 @@ class SuperJobAPI(CommonAPI):
 
     def __init__(self, api_key: str, vacancy: str, number_of_vacancy: str):
         self.__headers = {'X-Api-App-Id': api_key}
-        self.__params = {'page': 1,
+        self.__params = {'page': 0,
                          'count': self.__PER_PAGE,
                          'keyword': vacancy,
                          'order_field': 'payment',
@@ -96,7 +94,6 @@ class SuperJobAPI(CommonAPI):
             vacancy_info = {'from': 'SuperJob',
                             'name': vac.get('profession', "Вакансия без названия"),
                             'link': vac.get('link', 'Нет ссылки'),
-                            'employer': vac['client']['title'],
                             'requirement': vac.get('candidat', 'Нет описания требований к кандидату'),
                             'salary_from': vac.get('payment_from', 0),
                             'salary_to': vac.get('salary_to', 0),
@@ -109,8 +106,4 @@ class SuperJobAPI(CommonAPI):
                 vacancy_info['employer'] = 'Название организации не указано'
 
             self._out_vacancy_list.append(vacancy_info)
-
-a = SuperJobAPI('v3.r.137490855.2c549747f51cb5ae390c435ba5f403be0973ea19.39fa72f7a03a5e9e8ed5b8ec18df24eb7e431afb', 'python', '10')
-print(json.dumps(a.found_vacancy, indent=2, ensure_ascii=False))
-print(len(a.found_vacancy))
 

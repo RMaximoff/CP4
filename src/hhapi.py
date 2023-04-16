@@ -71,6 +71,6 @@ class HeadHunterAPI(CommonAPI):
             self._out_vacancy_list.append(vacancy_info)
 
 
-a = HeadHunterAPI('водитель категории C', '10')
+a = HeadHunterAPI('postgres', '10')
 print(json.dumps(a.vacancy_list,indent=2, ensure_ascii=False))
 print(len(a.vacancy_list))
