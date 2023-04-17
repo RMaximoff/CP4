@@ -29,7 +29,7 @@ def main():
             break
         else:
             print("Укажите номер одного из вариантов")
-    JSONWriter.write_json(vacancies)
+    JSONWriter.writer(vacancies)
     for i in vacancies:
         print(str(Vacancy(i)))
 
