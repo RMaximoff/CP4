@@ -24,6 +24,6 @@ class JSONWriter(Saver):
         Чтение файла
         :return:
         """
-        with open(cls._file_name, 'w') as file:
-            json.load(file, indent=4, ensure_ascii=False)
+        with open(cls._file_name, 'r', encoding='UTF-8') as file:
+            return json.load(file)
 
