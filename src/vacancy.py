@@ -13,7 +13,7 @@ class Vacancy:
         self._currency = vacancy['currency']
         self.requirement = vacancy['requirement']
 
-        self._min_salary = self._salary_from if self._salary_from <= self._salary_to else self._salary_to
+        self.min_salary = self._salary_from if self._salary_from <= self._salary_to else self._salary_to
 
     def __gt__(self, other):
         """
@@ -21,11 +21,11 @@ class Vacancy:
         """
         if not isinstance(other, Vacancy):
             raise TypeError('невозможно сравнить')
-        if not other._min_salary:
+        if not other.min_salary:
             return True
-        if not self._min_salary:
+        if not self.min_salary:
             return False
-        return self._min_salary >= other._min_salary
+        return self.min_salary >= other.min_salary
 
     def __str__(self):
         return f'{self._from_website}\n' \

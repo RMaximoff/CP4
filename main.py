@@ -30,8 +30,14 @@ def main():
         else:
             print("Укажите номер одного из вариантов")
     JSONWriter.writer(vacancies)
-    for i in vacancies:
-        print(str(Vacancy(i)))
+    # for i in vacancies:
+    #     print(str(Vacancy(i)))
+    min_salary = int(input('Укажите минимальную зп для вывода вакансий: '))
+    vacancy_list = [Vacancy(i) for i in JSONWriter.reader()]
+
+    for i in vacancy_list:
+        if i.min_salary >= min_salary:
+            print(i)
 
 
 if __name__ == '__main__':
